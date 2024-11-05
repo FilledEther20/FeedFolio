@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/FilledEther/RSS_Backend/internal/database"
+	"github.com/FilledEther/rss_reader/internal/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
@@ -66,7 +66,7 @@ func main() {
 	}
 	err = srv.ListenAndServe()
 	if err != nil {
-		log.Print("Si manja")
+		// log.Print("Si manja")
 		log.Fatal(err)
 	}
 	fmt.Println("PORT:", dbUrl)

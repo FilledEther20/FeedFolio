@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/FilledEther/RSS_Backend/internal/database"
+	"github.com/FilledEther/rss_reader/internal/database"
 	"github.com/google/uuid"
 )
 
@@ -14,6 +14,7 @@ import (
 func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
+		
 	}
 	decoder := json.NewDecoder(r.Body)
 	params := parameters{}

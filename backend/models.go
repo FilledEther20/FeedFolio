@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/FilledEther/RSS_Backend/internal/database"
+	"github.com/FilledEther/rss_reader/internal/database"
 	"github.com/google/uuid"
 )
 

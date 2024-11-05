@@ -1,4 +1,4 @@
-module github.com/FilledEther/RSS_Backend
+module github.com/FilledEther/rss_reader
 
 go 1.22.4
 
