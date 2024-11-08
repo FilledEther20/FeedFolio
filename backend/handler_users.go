@@ -6,15 +6,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/FilledEther/rss_reader/internal/auth"
 	"github.com/FilledEther/rss_reader/internal/database"
 	"github.com/google/uuid"
 )
 
-// Handler
 func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
-		
 	}
 	decoder := json.NewDecoder(r.Body)
 	params := parameters{}
@@ -33,6 +32,22 @@ func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Req
 	if err != nil {
 		respondWithError(w, 400, fmt.Sprintf("Couldn't create user: %s", err))
 		return
+	}
+
+	respondWithJSON(w, 200, databaseUsertoUser(user))
+}
+
+// Authenticated Endpoint(Basically due to the API key being utilized to get user the user must be authenticated. )
+func (apiConfig *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
+	apiKey, err := auth.GetAPIKey(r.Header)
+	// log.Fatalf("%v", apiKey)
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Auth error:%v", err))
+	}
+
+	user, err := apiConfig.DB.GetUserByAPIKey(r.Context(), apiKey)
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Couldn't get user%v", err))
 	}
 
 	respondWithJSON(w, 200, databaseUsertoUser(user))
