@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/FilledEther/rss_reader/internal/auth"
 	"github.com/FilledEther/rss_reader/internal/database"
 	"github.com/google/uuid"
 )
@@ -38,17 +37,6 @@ func (apiConfig *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Req
 }
 
 // Authenticated Endpoint(Basically due to the API key being utilized to get user the user must be authenticated. )
-func (apiConfig *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.GetAPIKey(r.Header)
-	// log.Fatalf("%v", apiKey)
-	if err != nil {
-		respondWithError(w, 403, fmt.Sprintf("Auth error:%v", err))
-	}
-
-	user, err := apiConfig.DB.GetUserByAPIKey(r.Context(), apiKey)
-	if err != nil {
-		respondWithError(w, 403, fmt.Sprintf("Couldn't get user%v", err))
-	}
-
+func (apiConfig *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, 200, databaseUsertoUser(user))
 }
